@@ -1,9 +1,11 @@
 import socket
-print("Supportik v 1.2")
-print("Автор: Данил Пистолетов")
-print("Дата релиза - 15.07.2022")
-print("DIVANNIE PARNI DEVELOPMENT")
-print("USA - shit, fuck USA!\n")
+print("""
+Supportik v1.3 [17.07.2022]
+Автор: Данил Пистолетов
+Сайт: danil-pistoletov.org
+GitHub: github.com/danilpistoletov/supportik
+Слава Руси, пендоссия соси
+""")
 
 def getip():
     import urllib.request
@@ -15,17 +17,20 @@ def getdhcp():
 
 def gethelp():
     print("""
-    help - список команд и пояснение к ним
-    getip - получение внешнего адреса компьютера
-    getdhcp - получение вашего DHCP
-    getpcname - получение имени вашего компьютера
-    getdomainip [ДОМЕН] - получение IP сайта (вводить без http/https)
-    sitestatus [ДОМЕН] - проверка статуса сайта (вводить без http/https)
-    speedtest - измерение скорости скачивания и загрузки
-    getmac - получить MAC-адрес
-    getmacnum - получить MAC-адрес в виде числа
-    scanportsonip - проверить открытые порты по IP
-    scanportsondomain - проверить открытые порты по домену (вводить без http/https)
+    Соблюдайте регистр команд и всё будет хорошо
+    help / помощь - список команд и пояснение к ним
+    getip / получитьайпи - получение внешнего адреса компьютера
+    getdhcp / получитьdhcp - получение вашего DHCP
+    getpcname / имякомпа - получение имени вашего компьютера
+    getdomainip / айписайта [ДОМЕН] - получение IP сайта (без http/https)
+    sitestatus / статуссайта [ДОМЕН] - проверка статуса сайта (без http/https)
+    speedtest / узнатьскорость - измерение скорости скачивания и загрузки
+    getmac / получитьмак - получить MAC-адрес
+    getmacnum / получитьмакцифры- получить MAC-адрес в виде числа
+    scanportsonip / проверитьпортыайпи - проверить популярные открытые порты по IP
+    scanportsondomain / проверитьпортыдомен - проверить популярные открытые порты по домену (без http/https)
+    rangeportsdomain / диапазонпортовдомен - проверить открытые порты по домену (без http/https)
+    rangeportsip / диапазонпортовайпи - проверить открытые порты по айпи
     """)
 
 def getpcname():
@@ -68,7 +73,26 @@ def getmacnum():
 
 def scanports(ip):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.settimeout(0.5)
+    sock.settimeout(0.05)
+    try:
+        connect = sock.connect((ip, i))
+        print("Порт ", i, " открыт")
+        sock.close()
+    except:
+        pass
+
+def genpass():
+    import random
+    variable = "1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"
+    length = int(input("Введите длину пароль\n"))
+    password = ""
+    for i in range(length):
+        password += random.choice(variable)
+    print(password)
+
+def scanportsv2(ip):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.settimeout(0.1)
     try:
         connect = sock.connect((ip, i))
         print("Порт ", i, " открыт")
@@ -78,34 +102,71 @@ def scanports(ip):
 
 while "anime" == "anime":
     command = input()
-    if command == "getip":
+    if command == "getip" or command == "получитьайпи":
         getip()
-    elif command == "getdhcp":
+    elif command == "getdhcp" or command == "получитьdhcp":
         getdhcp()
-    elif command == "help":
+    elif command == "help" or command == "помощь":
         gethelp()
-    elif command == "getpcname":
+    elif command == "getpcname" or command == "имякомпа":
         print(socket.getfqdn())
     elif command == "getlocalip":
         getlocalip()
     elif "getdomainip" in command:
         domain = command[12:]
         getdomainip(domain)
+    elif "айписайта" in command:
+        domain1 = command[10:]
+        getdomainip(domain1)
     elif "sitestatus" in command:
         siteforcheck = command[11:]
         sitestatus(siteforcheck)
-    elif command == "speedtest":
+    elif "статуссайта" in command:
+        siteforcheck1 = command[12:]
+        sitestatus(siteforcheck1)
+    elif command == "speedtest" or command == "узнатьскорость":
         sspeedtest()
-    elif command == "getmac":
+    elif command == "getmac" or command == "получитьмак":
         getmac()
-    elif command == "getmacnum":
+    elif command == "getmacnum" or command == "получитьмакцифры":
         getmacnum()
-    elif "scanportsonip" in command:
-        for i in range(1000):
-            scanports(command[14:])
+    elif "rangeportsip" in command:
+        na4alo = int(input("Введите начальный порт\n"))
+        predel = int(input("Введите последний порт\n"))
+        for i in range(na4alo, predel):
+            scanports(command[13:])
+    elif "диапазонпортовайпи" in command:
+        na4alo1 = int(input("Введите начальный порт\n"))
+        predel1 = int(input("Введите последний порт\n"))
+        for i in range(na4alo1, predel1):
+            scanports(command[19:])
+    elif "rangeportsdomain" in command:
+        na4alo2 = int(input("Введите начальный порт\n"))
+        predel2 = int(input("Введите последний порт\n"))
+        for i in range(na4alo2, predel2):
+            scanports(socket.gethostbyname(command[17:]))
+    elif "диапазонпортовдомен" in command:
+        na4alo3 = int(input("Введите начальный порт\n"))
+        predel3 = int(input("Введите последний порт\n"))
+        for i in range(na4alo3, predel3):
+            scanports(socket.gethostbyname(command[20:]))
+    elif "проверитьпортыдомен" in command:
+        ports = [25, 80, 143, 443]
+        for i in ports:
+            scanportsv2(socket.gethostbyname(command[20:]))
     elif "scanportsondomain" in command:
-        ipforscan = (socket.gethostbyname(command[18:]))
-        for i in range(1000):
-            scanports(ipforscan)
+        ports = [25, 80, 143, 443]
+        for i in ports:
+            scanportsv2(socket.gethostbyname(command[19:]))
+    elif "проверитьпортыайпи" in command:
+        ports = [7, 20, 21, 22, 23, 25, 69, 80, 443, 110, 143, 389, 3306, 5432]
+        for i in ports:
+            scanportsv2(command[19:])
+    elif "scanportsonip" in command:
+        ports = [7, 20, 21, 22, 23, 25, 69, 80, 443, 110, 143, 389, 3306, 5432]
+        for i in ports:
+            scanportsv2(command[14:])
+    elif command == "genpass" or command == "сделатьпароль":
+        genpass()
     else:
-        print("Неверная команда. Вы можете ввести \"help\" для просмотра всех команд")
+        print("Неверная команда. Вы можете ввести \"помощь\" для просмотра всех команд")
