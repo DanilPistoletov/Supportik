@@ -1,10 +1,10 @@
 import socket
 print("""
-Supportik v1.3 [17.07.2022]
+Supportik v1.4 [18.07.2022]
 Автор: Данил Пистолетов
 Сайт: danil-pistoletov.org
 GitHub: github.com/danilpistoletov/supportik
-Слава Руси, пендоссия соси
+США какиш
 """)
 
 def getip():
@@ -19,7 +19,7 @@ def gethelp():
     print("""
     Соблюдайте регистр команд и всё будет хорошо
     help / помощь - список команд и пояснение к ним
-    getip / получитьайпи - получение внешнего адреса компьютера
+    getip / мойайпи - получение внешнего адреса компьютера
     getdhcp / получитьdhcp - получение вашего DHCP
     getpcname / имякомпа - получение имени вашего компьютера
     getdomainip / айписайта [ДОМЕН] - получение IP сайта (без http/https)
@@ -31,6 +31,9 @@ def gethelp():
     scanportsondomain / проверитьпортыдомен - проверить популярные открытые порты по домену (без http/https)
     rangeportsdomain / диапазонпортовдомен - проверить открытые порты по домену (без http/https)
     rangeportsip / диапазонпортовайпи - проверить открытые порты по айпи
+    getcoords / моикоординаты - узнать координаты по своему IP-адресу
+    coordsbyip / координатыайпи - узнать координаты по указанному IP-адресу
+    citybyip / городпоайпи - узнать город по IP-адресу
     """)
 
 def getpcname():
@@ -73,7 +76,7 @@ def getmacnum():
 
 def scanports(ip):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.settimeout(0.05)
+    sock.settimeout(0.07)
     try:
         connect = sock.connect((ip, i))
         print("Порт ", i, " открыт")
@@ -92,7 +95,7 @@ def genpass():
 
 def scanportsv2(ip):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.settimeout(0.1)
+    sock.settimeout(0.08)
     try:
         connect = sock.connect((ip, i))
         print("Порт ", i, " открыт")
@@ -102,7 +105,7 @@ def scanportsv2(ip):
 
 while "anime" == "anime":
     command = input()
-    if command == "getip" or command == "получитьайпи":
+    if command == "getip" or command == "мойайпи":
         getip()
     elif command == "getdhcp" or command == "получитьdhcp":
         getdhcp()
@@ -151,22 +154,42 @@ while "anime" == "anime":
         for i in range(na4alo3, predel3):
             scanports(socket.gethostbyname(command[20:]))
     elif "проверитьпортыдомен" in command:
-        ports = [25, 80, 143, 443]
+        ports = [7, 20, 21, 22, 23, 25, 53, 69, 80, 81, 110, 115, 143, 389, 443, 587, 993, 995, 2083, 2087, 2222, 3128, 3306, 5432, 8080, 8083]
         for i in ports:
             scanportsv2(socket.gethostbyname(command[20:]))
     elif "scanportsondomain" in command:
-        ports = [25, 80, 143, 443]
+        ports = [7, 20, 21, 22, 23, 25, 53, 69, 80, 81, 110, 115, 143, 389, 443, 587, 993, 995, 2083, 2087, 2222, 3128, 3306, 5432, 8080, 8083]
         for i in ports:
             scanportsv2(socket.gethostbyname(command[19:]))
     elif "проверитьпортыайпи" in command:
-        ports = [7, 20, 21, 22, 23, 25, 69, 80, 443, 110, 143, 389, 3306, 5432]
+        ports = [7, 20, 21, 22, 23, 25, 53, 69, 80, 81, 110, 115, 143, 389, 443, 587, 993, 995, 2083, 2087, 2222, 3128, 3306, 5432, 8080, 8083]
         for i in ports:
             scanportsv2(command[19:])
     elif "scanportsonip" in command:
-        ports = [7, 20, 21, 22, 23, 25, 69, 80, 443, 110, 143, 389, 3306, 5432]
+        ports = [7, 20, 21, 22, 23, 25, 53, 69, 80, 81, 110, 115, 143, 389, 443, 587, 993, 995, 2083, 2087, 2222, 3128, 3306, 5432, 8080, 8083]
         for i in ports:
             scanportsv2(command[14:])
     elif command == "genpass" or command == "сделатьпароль":
         genpass()
+    elif command == "getcoords" or command == "моикоординаты":
+        import geocoder
+        g = geocoder.ipinfo("me")
+        print(g.latlng)
+    elif "coordsbyip" in command:
+        import geocoder
+        g1 = geocoder.ipinfo(command[11:])
+        print(g1.latlng)
+    elif "координатыайпи" in command:
+        import geocoder
+        g2 = geocoder.ipinfo(command[15:])
+        print(g2.latlng)
+    elif "citybyip" in command:
+        import geocoder
+        g3 = geocoder.ipinfo(command[9:])
+        print(g3.city)
+    elif "городпоайпи" in command:
+        import geocoder
+        g4 = geocoder.ipinfo(command[12:])
+        print(g4.city)
     else:
         print("Неверная команда. Вы можете ввести \"помощь\" для просмотра всех команд")
