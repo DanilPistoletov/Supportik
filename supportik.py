@@ -1,10 +1,9 @@
 import socket
 print("""
-Supportik v1.4 [18.07.2022]
+Supportik v1.6 [21.07.2022]
 Автор: Данил Пистолетов
 Сайт: danil-pistoletov.org
 GitHub: github.com/danilpistoletov/supportik
-США какиш
 """)
 
 def getip():
@@ -34,6 +33,8 @@ def gethelp():
     getcoords / моикоординаты - узнать координаты по своему IP-адресу
     coordsbyip / координатыайпи - узнать координаты по указанному IP-адресу
     citybyip / городпоайпи - узнать город по IP-адресу
+    genpass / сделатьпароль - генерирует пароль (английский алфавит + цифры)
+    genpassv2 / сложныйпароль - генерирует пароль (английский и русский алфавиты + цифры + символ)
     """)
 
 def getpcname():
@@ -72,11 +73,12 @@ def getmac():
     print(':'.join(re.findall('..', '%012x' % getnode())))
 
 def getmacnum():
+    from uuid import getnode
     print(getnode())
 
 def scanports(ip):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.settimeout(0.07)
+    sock.settimeout(0.08)
     try:
         connect = sock.connect((ip, i))
         print("Порт ", i, " открыт")
@@ -87,7 +89,16 @@ def scanports(ip):
 def genpass():
     import random
     variable = "1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"
-    length = int(input("Введите длину пароль\n"))
+    length = int(input("Введите длину пароля\n"))
+    password = ""
+    for i in range(length):
+        password += random.choice(variable)
+    print(password)
+
+def genpassv2():
+    import random
+    variable = "йцукенгшщзхъфывапролджэячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM!@#$%^&*/~"
+    length = int(input("Введите длину пароля\n"))
     password = ""
     for i in range(length):
         password += random.choice(variable)
@@ -191,5 +202,7 @@ while "anime" == "anime":
         import geocoder
         g4 = geocoder.ipinfo(command[12:])
         print(g4.city)
+    elif command == "genpassv2" or command == "сложныйпароль":
+        genpassv2()
     else:
         print("Неверная команда. Вы можете ввести \"помощь\" для просмотра всех команд")
